@@ -6,11 +6,13 @@ class App extends Component {
   constructor(){
     super();
     this.handleClick = this.handleClick.bind(this);
+    this.i = 0
   }
 
   state = {
     hasError: false,
-    showSpinner: true
+    showSpinner: true,
+    i: 0,
   }
 
   static getDerivedStateFromError(error) {
@@ -32,8 +34,29 @@ class App extends Component {
   }
 
   render() {
+  if (this.i ===0){
+    this.handleClick()
+    this.i += 1
 
-    if(this.state.isToggleOn){
+    return (
+      <div style={{ textAlign: "center"}}>
+
+      <div className="App">
+      <div className='card-header-bienv'>
+        <div className='card-header-title-bienv'>
+          Bienvenido a Stocks y Exchange
+        </div>
+      </div>
+      <button className="boton" onClick={this.handleClick} >
+          {this.state.isToggleOn ? 'DESCONECTAR' : 'CONECTAR'}
+        </button>
+        <Pagina hideSpinner={this.hideSpinner} showSpinner={this.state.showSpinner} />
+      </div>
+      </div>
+
+    );
+  }
+  else if(this.state.isToggleOn){
     return (
       <div style={{ textAlign: "center"}}>
 
