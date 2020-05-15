@@ -13,7 +13,7 @@ class Pagina extends React.Component {
    stocks: {},
    def_stocks: {},
    exchanges: {},
-   market_trend: undefined, // 'up' or 'down'
+   market_trend: undefined,
    connectionError: false,
    response: false,
    response2:false,
@@ -24,7 +24,6 @@ class Pagina extends React.Component {
     const socket = socketIOClient(stocksUrl, {path: "/stocks"});
     socket.emit("EXCHANGES", (data) => {});
     socket.on("EXCHANGES", (data) => {
-      //console.log(data);
       this.exchange(data);
     });
     socket.on("UPDATE", data => this.setState({ response: data }));
@@ -35,7 +34,6 @@ class Pagina extends React.Component {
     socket.on("SELL", this.sellStocks);
     socket.emit("STOCKS", (data) => {});
     socket.on("STOCKS", (data) => {
-      //console.log(data);
       this.stocksTotal(data);
     });
   }
@@ -62,7 +60,6 @@ class Pagina extends React.Component {
 
 
   stocksTotal = (data) =>{
-    //console.log(data[0]);
     for (const nombre of Object(data)){
       this.state.def_stocks[nombre.ticker] = {company_name:nombre.company_name, country: nombre.country}
   }
@@ -110,7 +107,6 @@ class Pagina extends React.Component {
       new_stocks[result.ticker].buy += result.volume
       this.setState({stocks: new_stocks})
     }
-    //console.log(result.volume)
 
     var total = 0;
     for (const llave of Object.keys(this.state.exchanges)){
@@ -162,14 +158,11 @@ class Pagina extends React.Component {
       if(key = result.ticker){
         new_stocks[result.ticker].company_name = this.state.def_stocks[key].company_name
         new_stocks[result.ticker].country = this.state.def_stocks[key].country
-
-      //console.log(this.state.def_stocks[key].company_name)
       }
     }
     this.setState({stocks: new_stocks, market_trend: this.newMarketTrend(up_values_count, down_values_count)})
   }
 
-  //bout the values that just came in, and not all the stocks
   newMarketTrend = (up_count, down_count) => {
     if(up_count === down_count) return undefined;
     return up_count > down_count ? 'up' : 'down'
@@ -228,7 +221,6 @@ class Pagina extends React.Component {
           exchanges={this.state.exchanges}
           toggleStockSelection_exchange={this.toggleStockSelection_exchange}
           resetData_exchange={this.resetData_exchange}
-          //market_trend={this.state.market_trend}
           areStocksLoaded_exchange={this.areStocksLoaded_exchange}
         />
         </div>
